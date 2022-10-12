@@ -4,7 +4,7 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 're
 
 
 
-        function RenderMenuItem({dish, onClick}){
+        function RenderMenuItem({dish}){
             return(
                 <Card>
 
