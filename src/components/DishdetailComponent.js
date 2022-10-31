@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Modal,ModalHeader, ModalBody, Button, Row, Label, Col } from 'reactstrap';
-import { Control, Errors, actions, LocalForm } from 'react-redux-form';
+import { Control, Errors, LocalForm } from 'react-redux-form';
 import dateFormat from "dateformat";
 import { Link } from 'react-router-dom';
  
