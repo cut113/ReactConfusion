@@ -1,26 +1,32 @@
-import React from "react";
+import React, { Component } from "react";
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import { Modal,ModalHeader, ModalBody, Button, Row, Label, Col } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Button, Row, Label, Col } from 'reactstrap';
 import { Control, Errors, LocalForm } from 'react-redux-form';
 import dateFormat from "dateformat";
 import { Link } from 'react-router-dom';
- 
+import { Loading } from "./LoadingComponent";
+
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-class CommentForm extends React.Component {
+class CommentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        isModalOpen: false
+            isModalOpen: false
         };
         this.toggleModal = this.toggleModal.bind(this);
     }
     toggleModal() {
         this.setState({
-        isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen
         });
+    }
+
+    handleSubmit(values) {
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
     render() {
         return (
@@ -52,7 +58,7 @@ class CommentForm extends React.Component {
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
                                         }}
-                                        />
+                                    />
                                     <Errors
                                         className="text-danger"
                                         model=".author"
@@ -62,7 +68,7 @@ class CommentForm extends React.Component {
                                             minLength: 'Must be greater than 2 characters',
                                             maxLength: 'Must be 15 characters or less'
                                         }}
-                                        />
+                                    />
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -74,7 +80,7 @@ class CommentForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Col md={{size:10}}>
+                                <Col md={{ size: 10 }}>
                                     <Button type="submit" color="primary">
                                         Submit
                                     </Button>
@@ -107,7 +113,7 @@ function RenderDish({ dish }) {
         )
     }
 }
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
     if (comments != null) {
         const com = comments.map((comment) => {
             return (
@@ -123,7 +129,7 @@ function RenderComments({ comments }) {
                 <ul className="list-unstyled">
                     {com}
                 </ul>
-                <CommentForm />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         )
     }
@@ -135,7 +141,25 @@ function RenderComments({ comments }) {
     }
 }
 const DishDetail = (props) => {
-    if (props.dishe != null) {
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dishe != null) {
         return (
             <div className="container">
                 <div className="row">
@@ -151,7 +175,11 @@ const DishDetail = (props) => {
                         <RenderDish dish={props.dishe} />
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments comments={props.comments} />
+                        <RenderComments comments={props.comments}
+                            addComment={props.addComment}
+                            dishId={props.dishe.id}
+                        />
+
                     </div>
                 </div>
             </div>
