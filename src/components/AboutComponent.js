@@ -86,7 +86,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        <Stagger in>
+                        <Stagger in delay={200}>
                            {leaders} 
                         </Stagger>
                         

@@ -43,7 +43,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 };
 export const fetchDishes = () => (dispatch) => {
 
-    dispatch(dishesLoading(true));
+    dispatch(dishesLoading());
 
     return fetch(baseUrl + 'dishes')
     .then(response => {
@@ -142,7 +142,7 @@ export const addPromos = (promos) => ({
 });
 
 export const fetchLeaders = () => (dispatch) => {
-  dispatch(leadersLoading(true));
+  dispatch(leadersLoading());
 
   return fetch(baseUrl + 'leaders')
       .then(response => {
@@ -161,15 +161,17 @@ export const fetchLeaders = () => (dispatch) => {
       )
   .then(response => response.json())
   .then(leaders => dispatch(addLeaders(leaders)))
-  .catch(error => dispatch(leadersFailed(error.message)));
+  .catch(error => {dispatch(leadersFailed(error.message))});
 }
 export const leadersLoading = () => ({
   type: ActionTypes.LEADERS_LOADING
 });
-export const leadersFailed = (errmess) => ({
+export const leadersFailed = (errmess) => {
+  console.log(errmess);
+  return {
   type: ActionTypes.LEADERS_FAILED,
   payload: errmess
-});
+}};
 export const addLeaders = (leaders) => ({
   type: ActionTypes.ADD_LEADERS,
   payload: leaders

@@ -11,7 +11,7 @@ export const Leaders = (state = {
         case ActionTypes.LEADERS_LOADING:
             return {...state, isLoading: true, errMess: null, leaders: []}
         case ActionTypes.LEADERS_FAILED:
-            return {...state, isLoading: false, errMess: action.payload};
+            return {...state, isLoading: false, errMess: action.payload, leaders: []};
         default:
             return state;
     }};
