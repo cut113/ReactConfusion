@@ -189,7 +189,7 @@ export const feedbackLoading = () => ({
   type: ActionTypes.FEEDBACK_LOADING
 })
 
-export const postFeedback = (firstname, lastname, telnum, email, agree, contactType, message) => (dispatch) => {
+export const postFeedback = (firstname, lastname, telnum, email, agree, contactType, message, id) => (dispatch) => {
   const newFeedback = {
       firstname: firstname,
       lastname: lastname,
@@ -197,7 +197,8 @@ export const postFeedback = (firstname, lastname, telnum, email, agree, contactT
       email: email,
       agree: agree,
       contactType: contactType,
-      message: message
+      message: message,
+      id: id
   }
   newFeedback.date = new Date().toISOString();
   return fetch(baseUrl + 'feedback', {
